@@ -37,7 +37,7 @@ func main() {
 
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"https://*", "http://*"},
+		AllowOrigins:     []string{"http://localhost:3000"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token", "Origin"},
 		ExposeHeaders:    []string{"Link", "Authorization"},
@@ -47,7 +47,7 @@ func main() {
 
 	r.GET("/api/todos", h.listTodos)
 	r.POST("/api/todos", h.createTodo)
-	r.PATCH("/api/todos/:id", h.updateTodo)
+	r.PUT("/api/todos/:id", h.updateTodo)
 	r.DELETE("/api/todos/:id", h.deleteTodo)
 
 	srv := &http.Server{
@@ -87,10 +87,10 @@ type Todo struct {
 	Body      string `json:"body" gorm:"column:body"`           // タスクの内容(text)
 }
 
-func NewTodo(completed bool, body string) *Todo {
+func NewTodo(body string) *Todo {
 	return &Todo{
 		ID:        uuid.New().String(),
-		Completed: completed,
+		Completed: false,
 		Body:      body,
 	}
 }
@@ -137,8 +137,7 @@ func (h *todoHandler) listTodos(c *gin.Context) {
 }
 
 type createTodoRequest struct {
-	Body      string `json:"body"`
-	Completed bool   `json:"completed"`
+	Body string `json:"body"`
 }
 
 func (h *todoHandler) createTodo(c *gin.Context) {
@@ -156,7 +155,7 @@ func (h *todoHandler) createTodo(c *gin.Context) {
 		return
 	}
 
-	todo := NewTodo(req.Completed, req.Body)
+	todo := NewTodo(req.Body)
 	if err := h.db.WithContext(ctx).Create(todo).Error; err != nil {
 		log.Error("Failed to create todo", log.Ferror(err))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

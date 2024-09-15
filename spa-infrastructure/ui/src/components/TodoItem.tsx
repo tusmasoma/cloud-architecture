@@ -11,10 +11,10 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
 	const { mutate: updateTodo, isPending: isUpdating } = useMutation({
 		mutationKey: ["updateTodo"],
 		mutationFn: async () => {
-			if (todo.completed) return alert("Todo is already completed");
+			// if (todo.completed) return alert("Todo is already completed");
 			try {
 				const res = await fetch(BASE_URL + `/todos/${todo._id}`, {
-					method: "PATCH",
+					method: "PUT",
 				});
 				const data = await res.json();
 				if (!res.ok) {

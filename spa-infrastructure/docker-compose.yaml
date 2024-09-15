@@ -9,7 +9,7 @@ services:
       - 3306:3306
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
-     - ./db/init.d:/docker-entrypoint-initdb.d
+      - ./db/init.d:/docker-entrypoint-initdb.d
       - db-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -22,7 +22,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./:/app/
+      - ./api:/app/
     env_file:
       - .env
     depends_on:
