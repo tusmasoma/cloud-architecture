@@ -20,8 +20,7 @@ gcloud container clusters get-credentials go-microservice-k8s-cluster \
 ## 共有リソースの適用
 ```bash
 kubectl apply -f shared-configmap.yaml
-kubectl apply -f shared-mysql-statefulset.yaml
-kubectl apply -f shared-mysql-service.yaml
+kubectl apply -f shared-mysql.yaml
 ```
 
 ## MySQL 権限の付与
@@ -37,26 +36,22 @@ FLUSH PRIVILEGES;
 ## マイクロサービスのマニフェスト適用
 ### Cusotmer Service
 ```bash
-kubectl apply -f customer-deployment.yaml
-kubectl apply -f customer-service.yaml
+kubectl apply -f customer.yaml
 ```
 
 ### Catalog Service
 ```bash
-kubectl apply -f catalog-deployment.yaml
-kubectl apply -f catalog-service.yaml
+kubectl apply -f catalog.yaml
 ```
 
 ### Order Service
 ```bash
-kubectl apply -f order-deployment.yaml
-kubectl apply -f order-service.yaml
+kubectl apply -f order.yaml
 ```
 
 ### Commerce Gateway
 ```bash
-kubectl apply -f commerce-gateway-deployment.yaml
-kubectl apply -f commerce-gateway-service.yaml
+kubectl apply -f commerce-gateway.yaml
 ```
 
 ### Ingress
