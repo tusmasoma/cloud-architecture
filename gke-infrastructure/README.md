@@ -1,5 +1,4 @@
-# GKE クラスターのセットアップとマイクロサービスのデプロイ
-
+# GKE Cluster Setup and Microservices Deployment
 ## 前提条件
 - `gcloud` がインストールされており、ログイン済みであること。
 
