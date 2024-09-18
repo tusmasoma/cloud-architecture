@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: commerce-gateway
+  name: customer
   labels:
-    app: commerce-gateway
+    app: customer
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: commerce-gateway
+      app: customer
   template:
     metadata:
       labels:
-        app: commerce-gateway
+        app: customer
     spec:
       containers:
-      - name: commerce-gateway
-        image: somakimura/commerce-gateway-service:latest
+      - name: customer
+        image: somakimura/customer-service:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 8081
         envFrom:
         - configMapRef:
             name: shared-config
@@ -29,3 +29,16 @@ spec:
           requests:
             memory: "64Mi"
             cpu: "250m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: customer-service
+spec:
+  selector:
+    app: customer
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+  type: ClusterIP

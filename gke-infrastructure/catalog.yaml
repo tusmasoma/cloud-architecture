@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: order
+  name: catalog
   labels:
-    app: order
+    app: catalog
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: order
+      app: catalog
   template:
     metadata:
       labels:
-        app: order
+        app: catalog
     spec:
       containers:
-      - name: order
-        image: somakimura/order-service:latest
+      - name: catalog
+        image: somakimura/catalog-service:latest
         ports:
-        - containerPort: 8083
+        - containerPort: 8082
         envFrom:
         - configMapRef:
             name: shared-config
@@ -29,3 +29,16 @@ spec:
           requests:
             memory: "64Mi"
             cpu: "250m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog-service
+spec:
+  selector:
+    app: catalog
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
+  type: ClusterIP
